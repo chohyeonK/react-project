@@ -8,13 +8,14 @@ import { useLocation } from 'react-router-dom';
 const Menubar = () => {
     const location = useLocation();
     const { pathname } = location
-    console.log(pathname)
+    // console.log(pathname)
+    const basename = process.env.PUBLIC_URL
 
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary">
                 <Container fluid>
-                    <Navbar.Brand href="/">REACT</Navbar.Brand>
+                    <Navbar.Brand href={`${basename}/`}>REACT</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav
@@ -22,12 +23,12 @@ const Menubar = () => {
                             style={{ maxHeight: '100px' }}
                             navbarScroll
                         >
-                            <Nav.Link href="/" active={pathname ==='/' && true}>Home</Nav.Link>
-                            <Nav.Link href="/cart" active={pathname ==='/cart' && true}>장바구니</Nav.Link>
+                            <Nav.Link href={`${basename}/`} active={pathname ==='/' && true}>Home</Nav.Link>
+                            <Nav.Link href={`${basename}/cart`} active={pathname ==='/cart' && true}>장바구니</Nav.Link>
 
                         </Nav>
                         <Nav>
-                            <Nav.Link href="/login" active={pathname ==='/login' && true}>
+                            <Nav.Link href={`${basename}/login`} active={pathname ==='/login' && true}>
                                 로그인
                             </Nav.Link>
                         </Nav>
