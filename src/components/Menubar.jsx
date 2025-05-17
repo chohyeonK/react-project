@@ -11,6 +11,7 @@ const Menubar = () => {
     // console.log(pathname)
     const basename = process.env.PUBLIC_URL
 
+
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -23,12 +24,12 @@ const Menubar = () => {
                             style={{ maxHeight: '100px' }}
                             navbarScroll
                         >
-                            <Nav.Link href={`${basename}/`} active={pathname ==='/' && true}>Home</Nav.Link>
-                            <Nav.Link href={`${basename}/cart`} active={pathname ==='/cart' && true}>장바구니</Nav.Link>
+                            <Nav.Link href={`${basename}/`} active={pathname === '/' && true}>Home</Nav.Link>
+                            <Nav.Link href={`${basename}/cart`} active={pathname === '/cart' && true}>장바구니</Nav.Link>
 
                         </Nav>
                         <Nav>
-                            <Nav.Link href={`${basename}/login`} active={pathname ==='/login' && true}>
+                            <Nav.Link href={`${basename}/login`} active={pathname === '/login' && true}>
                                 로그인
                             </Nav.Link>
                         </Nav>

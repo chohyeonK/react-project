@@ -3,7 +3,8 @@ import Container from 'react-bootstrap/esm/Container'
 import { Route, Routes } from 'react-router-dom'
 import HomePage from './HomePage'
 import CartPage from './CartPage'
-import LoginPage from './LoginPage'
+import LoginPage from './user/LoginPage'
+import JoinPage from './user/JoinPage'
 
 const MainRouter = () => {
     return (
@@ -12,6 +13,7 @@ const MainRouter = () => {
                 <Route path='/' element={<HomePage />}/>
                 <Route path='/cart' element={<CartPage />}/>
                 <Route path='/login' element={<LoginPage />}/>
+                <Route path='/join' element={<JoinPage />}/>
             </Routes>
         </Container>
     )
