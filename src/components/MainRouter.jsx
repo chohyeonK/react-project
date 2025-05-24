@@ -2,7 +2,7 @@ import React from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import { Route, Routes } from 'react-router-dom'
 import HomePage from './HomePage'
-import CartPage from './CartPage'
+import CartPage from './user/CartPage'
 import LoginPage from './user/LoginPage'
 import JoinPage from './user/JoinPage'
 

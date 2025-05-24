@@ -2,8 +2,17 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Row, Col, Card, CardBody, Form, InputGroup, Button } from 'react-bootstrap'
 import BookPage from './BookPage'
+import { BsCart4 } from "react-icons/bs";
+import { app } from '../firebase'
+import { getDatabase, ref, set, get } from 'firebase/database'
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 const HomePage = () => {
+    const db = getDatabase(app);
+    const [loading, setLoading] = useState(false);
+    const uid = sessionStorage.getItem('uid');
+    const navi = useNavigate()
     const [documents, setDocuments] = useState([])
     const [query, setQuery] = useState('리액트')
     const [page, setPage] = useState(1)
@@ -41,6 +50,26 @@ const HomePage = () => {
         }
     }
 
+    const onClickCart = (book) => {
+        if (uid) {
+            // 장바구니 넣기
+            get(ref(db, `cart/${uid}/${book.isbn}`))
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        alert('이미 장바구니에 존재합니다.');
+                    } else {
+                        const date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+                        set(ref(db, `cart/${uid}/${book.isbn}`), { ...book, date })
+                        alert('장바구니에 추가되었습니다.');
+                    }
+                })
+        } else {
+            navi('/login')
+        }
+    }
+
+    if (loading) return <h1 className='my-5 text-center'>로딩중....</h1>
+
     return (
         <div>
             <h1 className='my-5 text-center'>홈페이지</h1>
@@ -66,7 +95,12 @@ const HomePage = () => {
                             </Card.Body>
                             <Card.Footer>
                                 <div className='text-truncate'>{doc.title}</div>
-                                <div>{doc.sale_price}원</div>
+                                <div>
+                                    <Row>
+                                        <Col>{doc.sale_price}원</Col>
+                                        <Col className='text-end cart'><BsCart4 onClick={() => onClickCart(doc)} /></Col>
+                                    </Row>
+                                </div>
                             </Card.Footer>
                         </Card>
                     </Col>
