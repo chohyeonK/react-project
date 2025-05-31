@@ -4,13 +4,15 @@ import { Row, Col, Card, CardBody, Form, InputGroup, Button } from 'react-bootst
 import BookPage from './BookPage'
 import { BsCart4 } from "react-icons/bs";
 import { app } from '../firebase'
-import { getDatabase, ref, set, get } from 'firebase/database'
+import { getDatabase, ref, set, get, onValue, remove } from 'firebase/database'
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const HomePage = () => {
     const db = getDatabase(app);
     const [loading, setLoading] = useState(false);
+    const [heart, setHeart] = useState()
     const uid = sessionStorage.getItem('uid');
     const navi = useNavigate()
     const [documents, setDocuments] = useState([])
@@ -68,6 +70,44 @@ const HomePage = () => {
         }
     }
 
+    // 빈 하트를 클릭한 경우
+    const onClickRegHeart = (book) => {
+        if (uid) {
+            // 좋아요 등록
+            set(ref(db, `heart/${uid}/${book.isbn}`), book);
+            alert('관심 목록에 추가되었습니다.')
+        } else {
+            // 로그인 창으로 이동
+            alert('로그인이 필요한 서비스입니다.')
+            navi('/login')
+        }
+    }
+
+
+    // 현재 이메일의 좋아요 목록
+    const checkHeart = () => {
+        setLoading(true);
+        onValue(ref(db, `heart/${uid}`), snapshot => {
+            const rows = [];
+            snapshot.forEach(row => {
+                rows.push(row.val().isbn);
+            });
+            console.log(rows);
+            setHeart(rows);
+            setLoading(false);
+        });
+
+    }
+
+    useEffect(() => {
+        checkHeart()
+    }, [])
+
+    const onClickHeart = (book) => {
+        remove(ref(db, `heart/${uid}/${book.isbn}`), book);
+    }
+
+
     if (loading) return <h1 className='my-5 text-center'>로딩중....</h1>
 
     return (
@@ -87,11 +127,18 @@ const HomePage = () => {
             </Row>
             <Row>
                 {documents.map(doc =>
-                    <Col lg={2} md={3} xs={6} className='mb-2'>
+                    <Col lg={2} md={3} xs={6} className='mb-2' key={doc.isbn}>
                         <Card>
                             <Card.Body>
                                 {/* <img src={doc.thumbnail || 'https://placehold.co/100x150'} width='100%' /> */}
                                 <BookPage book={doc} />
+                                <div className='heart text-end'>
+                                    {heart.includes(doc.isbn) ?
+                                        <FaHeart onClick={() =>  onClickHeart(doc)} />
+                                        :
+                                        <FaRegHeart onClick={() => onClickRegHeart(doc)} />
+                                    }
+                                </div>
                             </Card.Body>
                             <Card.Footer>
                                 <div className='text-truncate'>{doc.title}</div>

@@ -51,7 +51,7 @@ const CartPage = (book) => {
                 <tbody>
                     {books.map(book =>
                         <tr key={book.isbn}>
-                            <td widh={50}><BookPage book={book} /></td>
+                            <td width={100}><BookPage book={book} /></td>
                             <td>{book.title}</td>
                             <td>{book.date}</td>
                             <td><Button variant='outline-danger' size='sm' onClick={() => onClickRemove(book)}>삭제</Button></td>

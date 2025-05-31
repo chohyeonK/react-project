@@ -32,23 +32,29 @@ const LoginPage = () => {
             setLoading(true)
             // 로그인 체크
             signInWithEmailAndPassword(auth, email, pass)
-            .then(success => {
-                setLoading(false)
-                alert('로그인 성공');
-                sessionStorage.setItem('email', email)
-                sessionStorage.setItem('uid', success.user.uid)
-                navi('/')
-            })
-            .catch(err => {
-                setLoading(false)
-                alert('로그인 에러: ' + err.message);
-            })
+                .then(success => {
+                    setLoading(false)
+                    alert('로그인 성공');
+                    sessionStorage.setItem('email', email)
+                    sessionStorage.setItem('uid', success.user.uid)
+
+                    if (sessionStorage.getItem('target')) {
+                        navi(sessionStorage.getItem('target'));
+                    } else {
+                        navi('/');
+
+                    }
+                })
+                .catch(err => {
+                    setLoading(false)
+                    alert('로그인 에러: ' + err.message);
+                })
         }
     }
 
     const basename = process.env.PUBLIC_URL
 
-    if(loading) return <h1 className='my-5 text-center'>로딩중......</h1>
+    if (loading) return <h1 className='my-5 text-center'>로딩중......</h1>
     return (
         <div>
             <Row className='my-5 justify-content-center'>

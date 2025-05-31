@@ -39,6 +39,7 @@ const Menubar = () => {
                             {email && 
                                 <Nav.Link href={`${basename}/cart`} active={pathname === '/cart' && true}>장바구니</Nav.Link>
                             }
+                            <Nav.Link href={`${basename}/post`} active={pathname.startsWith('/post')}>게시판</Nav.Link>
 
                         </Nav>
                         <Nav>
