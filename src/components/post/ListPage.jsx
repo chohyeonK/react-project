@@ -20,7 +20,7 @@ const ListPage = () => {
         setLoading(true);
         let no = 0;
         onSnapshot(q, snapshot => {
-            snapshot.forEach((row, index) => {
+            snapshot.forEach((row) => {
                 no = no + 1;
                 const start = (page - 1) * 5 + 1;
                 const end = page * 5;
@@ -70,7 +70,11 @@ const ListPage = () => {
                     {posts.map(post =>
                         <tr key={post.no}>
                             <td>{post.no}</td>
-                            <td>{post.title}</td>
+                            <td>
+                                <a href={`${process.env.PUBLIC_URL}/post/${post.id}`}>
+                                    {post.title}
+                                </a>
+                            </td>
                             <td>{post.email}</td>
                             <td>{post.date}</td>
                         </tr>
