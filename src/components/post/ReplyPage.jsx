@@ -5,12 +5,15 @@ import { app } from '../../firebase'
 import { getFirestore, doc, getDoc, setDoc, addDoc, collection } from 'firebase/firestore'
 import moment from 'moment'
 import ReplyList from './ReplyList'
+import { useNavigate } from 'react-router-dom'
+
 
 
 const RepylyPage = ({id}) => {
     const db = getFirestore(app);
     const email = sessionStorage.getItem('email');
     const[contents, setContents] = useState('');
+    const navi = useNavigate();
 
     const onWrite = async () => {
         const reply = {
@@ -25,6 +28,10 @@ const RepylyPage = ({id}) => {
 
 
     // 로그인 페이지 이동 추가해야 함(전 페이지 이동도)
+    const onClickLogin = () => {
+        sessionStorage.setItem('target', `/post/${id}`);
+        navi('/login')
+    }
 
     return (
         <div className='my-5'>
@@ -38,7 +45,7 @@ const RepylyPage = ({id}) => {
                 :
                 <Row className='justify-content-center'>
                     <Col md={10}>
-                        <Button className='w-100'>로그인</Button>
+                        <Button className='w-100' onClick={onClickLogin}>로그인</Button>
                     </Col>
                 </Row>
             }

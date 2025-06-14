@@ -23,6 +23,7 @@ const ReadPage = () => {
     const getPost = async () => {
         setLoading(true);
         const snapshot = await getDoc(doc(db, 'post', id));
+        console.log(snapshot.data())
         setPost(snapshot.data());
         setLoading(false);
     }

@@ -23,28 +23,15 @@ const ReplyList = ({ pid }) => {
     const [list, setList] = useState([])
 
     const getList = () => {
-        const q = query(
-            collection(db, 'reply'),
-            where('pid', '==', pid),
-            orderBy('date', 'desc')
-        )
-        onSnapshot(q, (snapshot) => {
-            const rows = []
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data()
-
-                const dateStr = data.date || ''
-
-                rows.push({
-                    id: docSnap.id,
-                    ...data,
-                    ellipsis: true,
-                    edit: false,
-                    text: data.contents,
-                    dateStr,
-                })
-            })
-            setList(rows)
+        const q = query(collection(db, 'reply'), where('pid', '==', pid), orderBy('date', 'desc'));
+        onSnapshot(q, snapshot => {
+            let rows = [];
+            snapshot.forEach(row => {
+                rows.push({ id: row.id, ...row.data() });
+            });
+            const data = rows.map(row => row && { ...row, ellipsis: true, edit: false, text: row.contents });
+            //console.log(data)
+            setList(data);
         })
     }
 
@@ -121,7 +108,7 @@ const ReplyList = ({ pid }) => {
                     <div key={reply.id} className="my-5">
                         <Row>
                             <Col className="text-muted">
-                                {reply.dateStr} : {reply.email}
+                                {reply.date}  : {reply.email}
                             </Col>
                             {reply.email === login && !reply.edit && (
                                 <Col className="text-end">
