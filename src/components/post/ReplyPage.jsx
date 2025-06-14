@@ -29,7 +29,6 @@ const RepylyPage = ({id}) => {
 
     // 로그인 페이지 이동 추가해야 함(전 페이지 이동도)
     const onClickLogin = () => {
-        console.log('로그인 버튼 누름')
         sessionStorage.setItem('target', `/post/${id}`);
         navi('/login')
     }
